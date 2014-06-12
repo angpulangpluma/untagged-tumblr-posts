@@ -117,9 +117,7 @@
     
     <p><strong>Step 2.</strong> Let's get a list of all your untagged posts.</p>
     
-    <p><center><button type="button" id="untagged_posts_button" ng-click="count = count + 1; get_meta(hostname); console.log('fish');" ng-init="count = 0">Get my untagged posts</button></center></p>
-    
-    
+    <p><center><button type="button" id="untagged_posts_button" ng-click="count = count + 1; get_meta(hostname)" ng-init="count = 0">Get my untagged posts</button></center></p>
     
     <p><strong>Step 3.</strong> Wait for any untagged posts to start showing up below:</p>
     
@@ -131,19 +129,46 @@
             It might be private, or perhaps you misspelt the name.</p>
         </div>
         <div ng-switch-when="200">
-            <div ng-if="blog.posts == 0">
+            <div ng-if="post_count == 0">
                 <p>Okay, I found your blog, but I didn't find any posts.</p>
             </div>
-            <div ng-if="blog.posts == 1">
-                <p>Okay, I found your blog, and just a single post.</p>
+            <div ng-if="post_count == 1">
+                <p>Okay, I found your blog, and just a single post. Here's a link to that post, if it was untagged:</p>
             </div>
-            <div ng-if="blog.posts > 11">
-                <p>Okay, I found your blog, along with {{blog.posts}} posts.</p>
+            <div ng-if="post_count > 1">
+                <p>Okay, I found your blog, along with {{blog.posts}} posts. Here are the posts which are untagged (if any):</p>
             </div>
         </div>
     </div>
     
-    <img src="http://placekitten.com/600/400">
+    
+    
+    <ol class="posts">
+      <li ng-repeat="post in posts" ng-hide="{{post.tags.length}}">
+        <a href="{{post.post_url}}">{{post.post_url}}</a>
+      </li>
+      <!-- <li ng-repeat="post in posts"> -->
+        <!-- {{post.post_url}} {{post.tags}} -->
+      <!-- </li> -->
+    </ol>
+    
+    <!-- {{typeof posts}} -->
+    
+    <div ng-if="!finished && (requests_needed > 0)">
+      Still working...
+    </div>
+    
+    <div ng-if="requests_needed > 0"> <!--   -->
+      {{get_more_posts(hostname)}}
+    </div>
+    
+    <div ng-if="finished">
+      Done!
+    </div>
+    
+    {{requests_needed}}
+    
+    <p><img src="http://placekitten.com/600/400"></p>
     
     {{meta.status}}
     
@@ -169,20 +194,6 @@
     
     <!-- Assume JavaScript is enabled -->
     
-    <div ng-switch on="{{post_count}}">
-        <div ng-switch-when="{{post_count}} == 0">
-            I can't find any posts. :(
-        </div>
-        <div ng-switch-when="{{post_count}} == 1">
-            I found one post.
-        </div>
-        <div ng-switch-default>
-            You have {{blog.posts}} posts.
-        </div>
-    </div>
-    
-    <p>We'll need {{requests_needed}} requests</p>
-    
     {{my_text}}
     
     {{count}}
@@ -193,17 +204,7 @@
     
     Here are your untagged posts:
     
-    {{get_posts(hostname, 5)}}
-    
-    <ul>
-      <li ng-repeat="n in [] | range:req">offset {{get_posts(hostname, 5)}}</li>
-    </ul>
-    
-    <ul class="posts">
-      <li ng-repeat="post in posts" ng-hide="{{post.tags.length}}">
-        <a href="{{post.post_url}}">{{post.post_url}}</a>
-      </li>
-    </ul>
+
     
     <h3>The legal stuff</h3>
     
