@@ -7,7 +7,6 @@
   <script src="js/controllers.js"></script>
   
   <link rel="stylesheet" type="text/css" href="http://alexwlchan.net/theme/css/style.css">
-  <link rel="stylesheet" type="text/css" href="http://alexwlchan.net/theme/css/pygments.css">
   
   <style>
     input {
@@ -60,6 +59,11 @@
       }
   //-->
   </script>
+  
+  <meta name="description" content="A way to find untagged posts from your Tumblr site">
+  <meta name="author" content="Alex Chan">
+  
+  <title>Find Untagged Tumblr Posts</title>
   
 </head>
 
@@ -115,111 +119,69 @@
     
     
     
-    <p><strong>Step 2.</strong> Let's get a list of all your untagged posts.</p>
+    <p><strong>Step 2.</strong> Click this button.</p>
     
     <p><center><button type="button" id="untagged_posts_button" ng-click="count = count + 1; get_meta(hostname)" ng-init="count = 0">Get my untagged posts</button></center></p>
     
     <p><strong>Step 3.</strong> Wait for any untagged posts to start showing up below:</p>
     
-    <hr>
+    <!-- <hr> -->
     
     <div ng-switch on="meta.status">
         <div ng-switch-when="404">
+            <hr>
+            
             <p>The Tumblr API says it can't find your blog.
             It might be private, or perhaps you misspelt the name.</p>
         </div>
         <div ng-switch-when="200">
             <div ng-if="post_count == 0">
+                <hr>
+                
                 <p>Okay, I found your blog, but I didn't find any posts.</p>
             </div>
             <div ng-if="post_count == 1">
                 <p>Okay, I found your blog, and just a single post. Here's a link to that post, if it was untagged:</p>
             </div>
             <div ng-if="post_count > 1">
+                <hr>
+                
                 <p>Okay, I found your blog, along with {{blog.posts}} posts. Here are the posts which are untagged (if any):</p>
             </div>
         </div>
     </div>
     
-    
-    
     <ol class="posts">
       <li ng-repeat="post in posts" ng-hide="{{post.tags.length}}">
         <a href="{{post.post_url}}">{{post.post_url}}</a>
       </li>
-      <!-- <li ng-repeat="post in posts"> -->
-        <!-- {{post.post_url}} {{post.tags}} -->
-      <!-- </li> -->
     </ol>
-    
-    <!-- {{typeof posts}} -->
-    
-    <div ng-if="!finished && (requests_needed > 0)">
-      Still working...
-    </div>
     
     <div ng-if="requests_needed > 0"> <!--   -->
       {{get_more_posts(hostname)}}
     </div>
     
-    <div ng-if="finished">
-      Done!
-    </div>
-    
-    {{requests_needed}}
-    
-    <p><img src="http://placekitten.com/600/400"></p>
-    
-    {{meta.status}}
-    
-    
-    
-    
-    {{count}}
-    
-    {{meta}}
-    
-    {{requests_needed}}
-    
-    
-    
-    
     <hr>
     
-    here we go
+    </br></br></br></br></br></br>
     
-    {{hostname}}
+    <h3>About this site</h3>
     
-    <hr><hr>
+    <p>I created this site because I was dissatisfied with my existing tool for finding untagged posts on somebody's Tumblr blog. It involved running a Python script and getting your own API key, which is sufficiently many steps to keep a lot of people away. You can read more about the motivation behind this <a href="http://alexwlchan.net/2014/06/untagged-tumblr-posts-redux/">on my blog</a>.</p>
     
-    <!-- Assume JavaScript is enabled -->
+    <p>I&rsquo;m not affiliated with Tumblr; I&rsquo;m just abig fan of their stuff. I don&rsquo;t work with them and they don&rsquo;t endorse this site. Any bugs are mine, not theirs.</p>
     
-    {{my_text}}
+    <p>If you find any bugs, then please email me (<a href="http://alexwlchan.net/about/">contact details</a>), or if you prefer, you can submit a pull request on <a href="http://github.com/alexwlchan/untagged-tumblr/">GitHub</a>.</p>
     
-    {{count}}
+    <p>I have a privacy policy.</p>
     
-    <hr>
-    
-    <hr>
-    
-    Here are your untagged posts:
-    
-
-    
-    <h3>The legal stuff</h3>
-    
-    <p>I'm not affiliated with Tumblr, I don't work with them and they don't endorse this site. Any bugs are mine, not theirs.</p>
-    
-    <p>I don't collect any data about which blogs get looked up with this site. I don't even think it's possible, but even if it were, I wouldn't collect it. You can read the site's source code if you'd like to check for yourself. It's quite short.</p>
-    
-    <p>I use Google Analytics to track basic information about visitors to the site: location, browser, and the number of visitors.</p>
   </div>
   </article>
   
   <hr class="footer">
   
   <div id="ending_message">
-    <p>Copyright &copy; 2014 Alex Chan.</p>
+    <p>Copyright &copy; 2014 Alex Chan. Powered by <a href="https://angularjs.org">AngularJS</a>. Code on <a href="http://github.com/alexwlchan/untagged-tumblr/">GitHub</a>.</p>
   </div>
 </main>
 

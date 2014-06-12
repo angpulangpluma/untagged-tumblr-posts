@@ -4,11 +4,10 @@
 
 var tumblrPostsApp = angular.module('tumblrPostsApp', []);
 var API_KEY = 'ii4TLRjfMoszcoDkrxBKUk5isHgx0ezQnJ8JWGntYIboVVigez'
-// var HOSTNAME = 'bloovanmeer.tumblr.com'
 
 tumblrPostsApp.controller('TumblrPostCtrl',
     function($scope, $http) {
-        $scope.hostname = 'alexwlchan.tumblr.com';
+        $scope.hostname = 'example.tumblr.com';
         
         $scope.requests_needed = 0;
         
@@ -33,21 +32,22 @@ tumblrPostsApp.controller('TumblrPostCtrl',
             console.log('Finished get_meta function');
         }
       
-      $scope.get_more_posts = function(hostname) {
-          var API_URL = 'http://api.tumblr.com/v2/blog/' + hostname + '/posts?api_key=' + API_KEY;
-          for (var i = 1; i <= $scope.requests_needed; i++) {
-              $http.get(API_URL + '&offset=' + (i * 20)).
-                  success(function(data) {
-                      $scope.posts = $scope.posts.concat(data.response.posts);
-                      // console.log(data.response.posts);
-                      // console.log($scope.posts);
-                  });
-              console.log('Getting more posts, at offset ' + (i * 20));
-          }
-          $scope.requests_needed = 0;
-          $scope.finished = true;
-          return 'get more posts function';
-      }
+        $scope.get_more_posts = function(hostname) {
+            var API_URL = 'http://api.tumblr.com/v2/blog/' + hostname + '/posts?api_key=' + API_KEY;
+            
+            for (var i = 1; i <= $scope.requests_needed; i++) {
+                $http.get(API_URL + '&offset=' + (i * 20)).
+                    success(function(data) {
+                        $scope.posts = $scope.posts.concat(data.response.posts);
+                        // console.log(data.response.posts);
+                        // console.log($scope.posts);
+                    });
+                console.log('Getting more posts, at offset ' + (i * 20));
+            }
+            $scope.requests_needed = 0;
+            $scope.finished = true;
+            return 'get more posts function';
+        }
       
       
       // for (var i = 1; i <= $scope.requests_needed; i++) {
