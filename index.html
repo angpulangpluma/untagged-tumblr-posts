@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en" ng-app="tumblrPostsApp">
+<head>
+  <meta charset="utf-8">
+
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="js/controllers.js"></script>
+  
+  <link rel="stylesheet" type="text/css" href="http://alexwlchan.net/theme/css/style.css">
+  <link rel="stylesheet" type="text/css" href="http://alexwlchan.net/theme/css/pygments.css">
+  
+  <style>
+    input {
+      padding: 10px;
+      font: 18pt Avenir, 'Segoe UI', 'Lucida Grande', Lucida, Verdana;
+      color: #c7301f;
+    }
+    button {
+      background-color: #fff;
+    	-webkit-border-radius:8px;
+    	-moz-border-radius:8px;
+    	border-radius:8px;
+    	text-indent:0;
+    	font: 14pt Avenir, 'Segoe UI', 'Lucida Grande', Lucida, Verdana;
+    	font-weight:bold;
+    	font-style:normal;
+    	height:60px;
+    	line-height:40px;
+      width:250px;
+    	text-align:center;
+      vertical-align: middle;
+    }
+    #untagged_posts_button {
+    	border: 3px solid #c7301f;
+    	color: #c7301f;
+    }
+    #untagged_posts_button:hover {
+      border: 3px solid #c7301f;
+      color: #c7301f;
+      position: relative;
+      top: -1px;
+    }
+    #untagged_posts_button:active {
+    	position:relative;
+    	top:3px;
+    }
+    input:focus {   
+      outline-color: #c7301f;
+    }
+  </style>
+  
+  <script type="text/javascript">
+  <!--
+      function toggle_visibility(id) {
+         var e = document.getElementById(id);
+         if(e.style.display == 'block')
+            e.style.display = 'none';
+         else
+            e.style.display = 'block';
+      }
+  //-->
+  </script>
+  
+</head>
+
+<body>
+
+<main>
+  <aside>
+    <div id="user_meta">
+      <center><h1><a href="index.html">Find Untagged Tumblr Posts</a></h1></center>
+    </div>
+  </aside>
+  
+  <article ng-controller="TumblrPostCtrl">
+    <div class="article_text">
+    
+    <noscript>
+      <p><strong>For this tool to work, please enable JavaScript.</strong></p>
+      
+      <p><strong>If you don't want to or can't enable JavaScript, then there's an alternative which involves downloading and executing a Python script <a href="http://alexwlchan.net/2013/08/untagged-tumblr-posts/">on my website</a>.</strong></p>
+      
+      <hr>
+    </noscript>
+    
+    
+    
+    <p><strong>Step 1.</strong> Enter your Tumblr URL.</p>
+    
+    <p><center>
+      <form novalidate class="simple-form">
+        <input type="text" ng-model="hostname" value="example.tumblr.com" />
+      </form>
+    </center></p>
+    
+    <p>Specifically, I need your <strong>hostname</a></strong>. This is usually the URL of your site, although it can be a custom URL as well. <a href="#" onclick="toggle_visibility('tumblr_api_quote');">Learn more.</a></p>
+      
+    <div id="tumblr_api_quote" style="display: none;">
+      <p>Here's part of the <a href="https://www.tumblr.com/docs/en/api/v2#hostname">Tumblr API documentation</a> which explains this fully:</p>
+    
+      <blockquote>
+        <p>Each blog has a unique hostname. The hostname can be <strong>standard</strong> or <strong>custom.</strong></p>
+        <ul>
+          <li>
+            <strong>Standard</strong> hostname: the blog short name + <code>.tumblr.com</code>.
+            <p style="margin-top:5px;">Example: <code>greentype.tumblr.com</code></p>
+          </li>
+          <li>
+            <strong>Custom</strong> hostname: Anything at all, as determined by a DNS CNAME entry.
+            <p style="margin-top:5px;">Example: <code>www.davidslog.com</code></p>
+          </li>
+        </ul>
+      </blockquote>
+    </div>
+    
+    
+    
+    <p><strong>Step 2.</strong> Let's get a list of all your untagged posts.</p>
+    
+    <p><center><button type="button" id="untagged_posts_button" ng-click="count = count + 1; get_meta(hostname); console.log('fish');" ng-init="count = 0">Get my untagged posts</button></center></p>
+    
+    
+    
+    <p><strong>Step 3.</strong> Wait for any untagged posts to start showing up below:</p>
+    
+    <hr>
+    
+    <div ng-switch on="meta.status">
+        <div ng-switch-when="404">
+            <p>The Tumblr API says it can't find your blog.
+            It might be private, or perhaps you misspelt the name.</p>
+        </div>
+        <div ng-switch-when="200">
+            <div ng-if="blog.posts == 0">
+                <p>Okay, I found your blog, but I didn't find any posts.</p>
+            </div>
+            <div ng-if="blog.posts == 1">
+                <p>Okay, I found your blog, and just a single post.</p>
+            </div>
+            <div ng-if="blog.posts > 11">
+                <p>Okay, I found your blog, along with {{blog.posts}} posts.</p>
+            </div>
+        </div>
+    </div>
+    
+    <img src="http://placekitten.com/600/400">
+    
+    {{meta.status}}
+    
+    
+    
+    
+    {{count}}
+    
+    {{meta}}
+    
+    {{requests_needed}}
+    
+    
+    
+    
+    <hr>
+    
+    here we go
+    
+    {{hostname}}
+    
+    <hr><hr>
+    
+    <!-- Assume JavaScript is enabled -->
+    
+    <div ng-switch on="{{post_count}}">
+        <div ng-switch-when="{{post_count}} == 0">
+            I can't find any posts. :(
+        </div>
+        <div ng-switch-when="{{post_count}} == 1">
+            I found one post.
+        </div>
+        <div ng-switch-default>
+            You have {{blog.posts}} posts.
+        </div>
+    </div>
+    
+    <p>We'll need {{requests_needed}} requests</p>
+    
+    {{my_text}}
+    
+    {{count}}
+    
+    <hr>
+    
+    <hr>
+    
+    Here are your untagged posts:
+    
+    {{get_posts(hostname, 5)}}
+    
+    <ul>
+      <li ng-repeat="n in [] | range:req">offset {{get_posts(hostname, 5)}}</li>
+    </ul>
+    
+    <ul class="posts">
+      <li ng-repeat="post in posts" ng-hide="{{post.tags.length}}">
+        <a href="{{post.post_url}}">{{post.post_url}}</a>
+      </li>
+    </ul>
+    
+    <h3>The legal stuff</h3>
+    
+    <p>I'm not affiliated with Tumblr, I don't work with them and they don't endorse this site. Any bugs are mine, not theirs.</p>
+    
+    <p>I don't collect any data about which blogs get looked up with this site. I don't even think it's possible, but even if it were, I wouldn't collect it. You can read the site's source code if you'd like to check for yourself. It's quite short.</p>
+    
+    <p>I use Google Analytics to track basic information about visitors to the site: location, browser, and the number of visitors.</p>
+  </div>
+  </article>
+  
+  <hr class="footer">
+  
+  <div id="ending_message">
+    <p>Copyright &copy; 2014 Alex Chan.</p>
+  </div>
+</main>
+
+</body>
+</html>
