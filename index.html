@@ -5,9 +5,9 @@
 
   <script src="bower_components/angular/angular.js"></script>
   <script src="js/controllers.js"></script>
-  
-  <link rel="stylesheet" type="text/css" href="http://alexwlchan.net/theme/css/style.css">
-  
+
+  <link rel="stylesheet" type="text/css" href="http://alexwlchan.net/css/style.css">
+
   <style>
     input {
       padding: 10px;
@@ -43,11 +43,11 @@
     	position:relative;
     	top:3px;
     }
-    input:focus {   
+    input:focus {
       outline-color: #c7301f;
     }
   </style>
-  
+
   <script type="text/javascript">
   <!--
       function toggle_visibility(id) {
@@ -59,12 +59,12 @@
       }
   //-->
   </script>
-  
+
   <meta name="description" content="A way to find untagged posts from your Tumblr site">
   <meta name="author" content="Alex Chan">
-  
+
   <title>Find Untagged Tumblr Posts</title>
-  
+
 </head>
 
 <body>
@@ -75,33 +75,33 @@
       <center><h1><a href="index.html">Find Untagged Tumblr Posts</a></h1></center>
     </div>
   </aside>
-  
+
   <article ng-controller="TumblrPostCtrl">
     <div class="article_text">
-    
+
     <noscript>
       <p><strong>For this tool to work, please enable JavaScript.</strong></p>
-      
+
       <p><strong>If you don't want to or can't enable JavaScript, then there's an alternative which involves downloading and executing a Python script <a href="http://alexwlchan.net/2013/08/untagged-tumblr-posts/">on my website</a>.</strong></p>
-      
+
       <hr>
     </noscript>
-    
-    
-    
+
+
+
     <p><strong>Step 1.</strong> Enter your Tumblr URL.</p>
-    
+
     <p><center>
       <form novalidate class="simple-form">
         <input type="text" ng-model="hostname" value="example.tumblr.com" />
       </form>
     </center></p>
-    
+
     <p>Specifically, I need your <strong>hostname</a></strong>. This is usually the URL of your site, although it can be a custom URL as well. <a href="#" onclick="toggle_visibility('tumblr_api_quote');">Learn more.</a></p>
-      
+
     <div id="tumblr_api_quote" style="display: none;">
       <p>Here's part of the <a href="https://www.tumblr.com/docs/en/api/v2#hostname">Tumblr API documentation</a> which explains this fully:</p>
-    
+
       <blockquote>
         <p>Each blog has a unique hostname. The hostname can be <strong>standard</strong> or <strong>custom.</strong></p>
         <ul>
@@ -116,28 +116,28 @@
         </ul>
       </blockquote>
     </div>
-    
-    
-    
+
+
+
     <p><strong>Step 2.</strong> Click this button.</p>
-    
+
     <p><center><button type="button" id="untagged_posts_button" ng-click="count = count + 1; get_meta(hostname)" ng-init="count = 0">Get my untagged posts</button></center></p>
-    
+
     <p><strong>Step 3.</strong> Wait for any untagged posts to start showing up below:</p>
-    
+
     <!-- <hr> -->
-    
+
     <div ng-switch on="meta.status">
         <div ng-switch-when="404">
             <hr>
-            
+
             <p>The Tumblr API says it can't find your blog.
             It might be private, or perhaps you misspelt the name.</p>
         </div>
         <div ng-switch-when="200">
             <div ng-if="post_count == 0">
                 <hr>
-                
+
                 <p>Okay, I found your blog, but I didn't find any posts.</p>
             </div>
             <div ng-if="post_count == 1">
@@ -145,41 +145,41 @@
             </div>
             <div ng-if="post_count > 1">
                 <hr>
-                
+
                 <p>Okay, I found your blog, along with {{blog.posts}} posts. Here are the posts which are untagged (if any):</p>
             </div>
         </div>
     </div>
-    
+
     <ol class="posts">
       <li ng-repeat="post in posts" ng-hide="{{post.tags.length}}">
         <a href="{{post.post_url}}">{{post.post_url}}</a>
       </li>
     </ol>
-    
+
     <div ng-if="requests_needed > 0"> <!--   -->
       {{get_more_posts(hostname)}}
     </div>
-    
+
     <hr>
-    
+
     </br></br></br></br></br></br>
-    
+
     <h3>About this site</h3>
-    
+
     <p>I created this site because I was dissatisfied with my existing tool for finding untagged posts on somebody's Tumblr blog. It involved running a Python script and getting your own API key, which is sufficiently many steps to keep a lot of people away. You can read more about the motivation behind this <a href="http://alexwlchan.net/2014/06/untagged-tumblr-posts-redux/">on my blog</a>.</p>
-    
+
     <p>I&rsquo;m not affiliated with Tumblr; I&rsquo;m just abig fan of their stuff. I don&rsquo;t work with them and they don&rsquo;t endorse this site. Any bugs are mine, not theirs.</p>
-    
+
     <p>If you find any bugs, then please email me (<a href="http://alexwlchan.net/about/">contact details</a>), or if you prefer, you can submit a pull request on <a href="http://github.com/alexwlchan/untagged-tumblr/">GitHub</a>.</p>
-    
+
     <p>I have a privacy policy.</p>
-    
+
   </div>
   </article>
-  
+
   <hr class="footer">
-  
+
   <div id="ending_message">
     <p>Copyright &copy; 2014 Alex Chan. Powered by <a href="https://angularjs.org">AngularJS</a>. Code on <a href="http://github.com/alexwlchan/untagged-tumblr/">GitHub</a>.</p>
   </div>
